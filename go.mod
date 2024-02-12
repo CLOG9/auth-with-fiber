@@ -1,4 +1,4 @@
-module main.go
+module testfiber 
 
 go 1.21.6
 
