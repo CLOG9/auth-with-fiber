@@ -1,7 +1,6 @@
 # auth-with-fiber
 
 ## todo
-- ci
 - docker
 - router
 - middlwares
