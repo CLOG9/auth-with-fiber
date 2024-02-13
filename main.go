@@ -2,7 +2,6 @@ package main
 
 import (
 	"testfiber/config"
-
 	admin_route "testfiber/routes"
 
 	"github.com/gofiber/fiber/v2"
