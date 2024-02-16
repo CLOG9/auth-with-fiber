@@ -8,7 +8,6 @@ import (
 
 func main() {
 	app := fiber.New()
-
 	app.Use(say_hey.SayHey)
 	EnpRouter(app)
 

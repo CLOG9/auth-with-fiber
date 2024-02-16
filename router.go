@@ -2,7 +2,7 @@ package main
 
 import (
 	"testfiber/config"
-	handlers "testfiber/handlers/admin"
+	handlers "testfiber/handlers/auth"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -10,8 +10,9 @@ import (
 func EnpRouter(app *fiber.App) {
 	api := app.Group(config.Defaults.ApiVersion) // api
 
-	admin := api.Group("/admin")
+	auth := api.Group("/auth")
 
-	admin.Get("/dashboard", handlers.AdminCtrl)
+	auth.Post("/login", handlers.LoginCtrl)
+	auth.Post("/register", handlers.RegisterCtrl)
 
 }

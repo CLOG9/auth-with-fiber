@@ -1,11 +1,11 @@
 # auth-with-fiber
 
 ## todo
+- validator
 - docker
-- router
 - middlwares
 - handlers 
-- sqlc
+- gorm 
 - login/register
 - oauth
 - 2FA
