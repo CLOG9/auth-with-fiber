@@ -1,4 +1,4 @@
-package admin_controller
+package handlers
 
 import "github.com/gofiber/fiber/v2"
 
