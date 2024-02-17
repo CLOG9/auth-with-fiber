@@ -36,8 +36,7 @@ func RegisterCtrl(c *fiber.Ctx) error {
 		return c.Status(401).JSON(shared.GlobErrResp(err.Error()))
 	}
 	if err := createUser(body); err != nil {
-		return c.Status(500).JSON(shared.GlobErrResp(err.Error()))
+		return c.Status(400).JSON(shared.GlobErrResp(err.Error()))
 	}
-
-	return c.SendString("done")
+	return c.JSON(shared.GlobResp(body))
 }

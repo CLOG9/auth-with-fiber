@@ -1,24 +1,28 @@
 package handlers
 
 import (
-	"log"
 	"testfiber/config"
 	"testfiber/schema"
 )
 
 func createUser(body *UserRegister) error {
-	// Create a new User object
 	user := &schema.User{
 		Username: body.Username,
 		Email:    body.Email,
 		Password: body.Password,
 	}
 
-	// Create the user record in the database
 	if err := config.DB.Db.Create(user).Error; err != nil {
-		log.Fatal(err)
 		return err
 	}
 	return nil
 
+}
+func GetUserByEmail(email string) (*UserRegister, error) {
+	user := &UserRegister{}
+
+	if err := config.DB.Db.Model(&schema.User{}).Where("email = ?", email).Select("username, email, password").First(user).Error; err != nil {
+		return nil, err
+	}
+	return user, nil
 }
