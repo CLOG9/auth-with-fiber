@@ -1,6 +1,7 @@
 package main
 
 import (
+	"testfiber/config"
 	say_hey "testfiber/middlewares"
 
 	"github.com/gofiber/fiber/v2"
@@ -8,6 +9,7 @@ import (
 
 func main() {
 	app := fiber.New()
+	config.ConnectToPostgreSQL()
 	app.Use(say_hey.SayHey)
 	EnpRouter(app)
 
