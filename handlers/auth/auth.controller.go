@@ -18,6 +18,7 @@ func LoginCtrl(c *fiber.Ctx) error {
 			Message: err.Error(),
 		})
 	}
+
 	return c.SendString("hey")
 }
 

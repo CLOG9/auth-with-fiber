@@ -22,6 +22,8 @@ services:
     volumes:
       - fiber-redis-data:/data
 
+    ports:
+      - "6379:6379"
     networks:
       - authf-network
 networks:
