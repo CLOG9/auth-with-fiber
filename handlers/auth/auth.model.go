@@ -6,6 +6,6 @@ type UserRegister struct {
 	Password string `validate:"required"`
 }
 type UserLogin struct {
-	Username string `json:"username" validate:"required,min=5,max=20"`
+	Email    string `json:"email"    validate:"required,min=5,max=20"`
 	Password string `json:"password" validate:"required"`
 }

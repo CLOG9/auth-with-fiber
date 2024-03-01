@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"log"
+	"testfiber/config"
 	shared "testfiber/shared/models"
 
 	"github.com/go-playground/validator/v10"
@@ -11,15 +13,32 @@ func LoginCtrl(c *fiber.Ctx) error {
 	//validation
 	validate := validator.New()
 	body := new(UserLogin)
-	c.BodyParser(&body)
-	if err := validate.Struct(body); err != nil {
-		return c.Status(401).JSON(shared.GlobalErrorHandlerResp{
-			Success: false,
-			Message: err.Error(),
-		})
+	if err := c.BodyParser(body); err != nil {
+		return c.Status(400).JSON(shared.GlobErrResp(err.Error()))
 	}
 
-	return c.SendString("hey")
+	// Validate request body
+	if err := validate.Struct(body); err != nil {
+		return c.Status(401).JSON(shared.GlobErrResp(err.Error()))
+	}
+
+	user, err := GetUserByEmail(body.Email)
+	if err != nil {
+		return c.Status(403).JSON(shared.GlobErrResp(err.Error()))
+	}
+	if user.Password != body.Password {
+		return c.Status(401).
+			JSON(shared.GlobErrResp("email or password incorrect"))
+	}
+	sess, err := config.Store.St.Get(c)
+	if err != nil {
+		log.Println(err)
+	}
+	sess.Set("email", "authed-"+user.Email)
+	if err := sess.Save(); err != nil {
+		panic(err)
+	}
+	return c.Status(200).JSON(shared.GlobResp("authenticated"))
 }
 
 func RegisterCtrl(c *fiber.Ctx) error {
@@ -40,4 +59,20 @@ func RegisterCtrl(c *fiber.Ctx) error {
 		return c.Status(400).JSON(shared.GlobErrResp(err.Error()))
 	}
 	return c.JSON(shared.GlobResp(body))
+}
+
+func LogoutCtrl(c *fiber.Ctx) error {
+	sess, err := config.Store.St.Get(c)
+	if err != nil {
+		log.Println(err)
+	}
+
+	sess.Delete("email")
+
+	// Destroy session
+	if err := sess.Destroy(); err != nil {
+		panic(err)
+	}
+
+	return c.JSON("done")
 }

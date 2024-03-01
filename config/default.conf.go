@@ -5,5 +5,5 @@ type DefaultConfig struct {
 }
 
 var Defaults DefaultConfig = DefaultConfig{
-	ApiVersion: "/v1",
+	ApiVersion: "/api/v1",
 }

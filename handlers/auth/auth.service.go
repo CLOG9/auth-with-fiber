@@ -26,3 +26,12 @@ func GetUserByEmail(email string) (*UserRegister, error) {
 	}
 	return user, nil
 }
+
+func GetRedisSession(key string) ([]byte, error) {
+	rdb := config.Rds()
+	value, err := rdb.Get(key)
+	if err != nil {
+		return nil, err
+	}
+	return value, nil
+}

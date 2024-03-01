@@ -2,15 +2,25 @@ package main
 
 import (
 	"testfiber/config"
-	say_hey "testfiber/middlewares"
+	"testfiber/middlewares"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func main() {
 	app := fiber.New()
+
+	// db
 	config.ConnectToPostgreSQL()
-	app.Use(say_hey.SayHey)
+
+	// session
+	config.SessCnf()
+
+	app.Use(
+		[]string{"/api/v1/auth/logout", "/api/v1/auth/"},
+		middlewares.Authenticate,
+	)
+	// router
 	EnpRouter(app)
 
 	//

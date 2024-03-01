@@ -14,5 +14,9 @@ func EnpRouter(app *fiber.App) {
 
 	auth.Post("/login", handlers.LoginCtrl)
 	auth.Post("/register", handlers.RegisterCtrl)
+	auth.Get("/logout", handlers.LogoutCtrl)
 
+	auth.Get("/", func(c *fiber.Ctx) error {
+		return c.SendString("hey")
+	})
 }
