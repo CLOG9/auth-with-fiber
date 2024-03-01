@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"log"
+	"os"
 	"testfiber/config"
 	shared "testfiber/shared/models"
 
@@ -34,7 +35,7 @@ func LoginCtrl(c *fiber.Ctx) error {
 	if err != nil {
 		log.Println(err)
 	}
-	sess.Set("email", "authed-"+user.Email)
+	sess.Set(os.Getenv("SESSION_KEY"), os.Getenv("SESSION_SUB_KEY")+user.Email)
 	if err := sess.Save(); err != nil {
 		panic(err)
 	}
@@ -67,12 +68,12 @@ func LogoutCtrl(c *fiber.Ctx) error {
 		log.Println(err)
 	}
 
-	sess.Delete("email")
+	sess.Delete(os.Getenv("SESSION_KEY"))
 
 	// Destroy session
 	if err := sess.Destroy(); err != nil {
 		panic(err)
 	}
 
-	return c.JSON("done")
+	return c.Status(200).JSON(shared.GlobResp("logged out"))
 }

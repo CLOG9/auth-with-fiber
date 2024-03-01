@@ -6,6 +6,7 @@ require (
 	github.com/go-playground/validator/v10 v10.18.0
 	github.com/gofiber/fiber/v2 v2.52.0
 	github.com/gofiber/storage/redis/v3 v3.1.0
+	github.com/joho/godotenv v1.5.1
 	github.com/lucsky/cuid v1.2.1
 	gorm.io/driver/postgres v1.5.6
 	gorm.io/gorm v1.25.7

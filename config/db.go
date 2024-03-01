@@ -2,6 +2,7 @@ package config
 
 import (
 	"log"
+	"os"
 	"testfiber/schema"
 
 	"gorm.io/driver/postgres"
@@ -15,7 +16,8 @@ type Dbinstance struct {
 var DB Dbinstance
 
 func ConnectToPostgreSQL() {
-	dsn := "user=root password=roievn2zv7rz6hr9th3q4g dbname=pgs_db host=localhost port=5432 sslmode=disable"
+
+	dsn := os.Getenv("PG_DATABASE")
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)

@@ -1,25 +1,27 @@
 package main
 
 import (
+	"log"
 	"testfiber/config"
-	"testfiber/middlewares"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
 	app := fiber.New()
 
+	println(config.Defaults.ApiVersion)
 	// db
 	config.ConnectToPostgreSQL()
 
 	// session
 	config.SessCnf()
 
-	app.Use(
-		[]string{"/api/v1/auth/logout", "/api/v1/auth/"},
-		middlewares.Authenticate,
-	)
 	// router
 	EnpRouter(app)
 
