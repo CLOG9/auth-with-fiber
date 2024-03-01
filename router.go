@@ -17,7 +17,7 @@ func EnpRouter(app *fiber.App) {
 	auth.Post("/register", handlers.RegisterCtrl)
 	auth.Get("/logout", middlewares.Authenticate, handlers.LogoutCtrl)
 
-	auth.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("hey")
-	})
+	auth.Get("/google", handlers.GoogleLogin)
+	auth.Get("/google/callback", handlers.GoogleCallback)
+
 }

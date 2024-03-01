@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"testfiber/config"
+	"testfiber/shared/helpers"
 	shared "testfiber/shared/models"
 
 	"github.com/go-playground/validator/v10"
@@ -27,10 +28,15 @@ func LoginCtrl(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(403).JSON(shared.GlobErrResp(err.Error()))
 	}
-	if user.Password != body.Password {
-		return c.Status(401).
-			JSON(shared.GlobErrResp("email or password incorrect"))
+	if user.Type != "CRED" {
+		return c.Status(401).JSON(shared.GlobErrResp("login failed"))
 	}
+
+	if !helpers.ComparePasswords(user.Password, body.Password) {
+		return c.Status(401).
+			JSON(shared.GlobErrResp("Invalid username or password"))
+	}
+
 	sess, err := config.Store.St.Get(c)
 	if err != nil {
 		log.Println(err)
@@ -56,7 +62,20 @@ func RegisterCtrl(c *fiber.Ctx) error {
 	if err := validate.Struct(body); err != nil {
 		return c.Status(401).JSON(shared.GlobErrResp(err.Error()))
 	}
-	if err := createUser(body); err != nil {
+	hashedPassword, err := helpers.HashPassword(body.Password)
+	if err != nil {
+		return c.Status(401).JSON(shared.GlobErrResp(err.Error()))
+
+	}
+	userg := UserByEmail{
+		Username: body.Username,
+		Email:    body.Email,
+		Password: hashedPassword,
+		Type:     "CRED",
+		Image:    "/",
+		Token_id: "/",
+	}
+	if err := createUser(&userg); err != nil {
 		return c.Status(400).JSON(shared.GlobErrResp(err.Error()))
 	}
 	return c.JSON(shared.GlobResp(body))

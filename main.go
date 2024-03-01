@@ -15,7 +15,7 @@ func main() {
 	}
 	app := fiber.New()
 
-	println(config.Defaults.ApiVersion)
+	config.GoogleConfig()
 	// db
 	config.ConnectToPostgreSQL()
 

@@ -17,4 +17,7 @@ type User struct {
 	Username string `gorm:"uniqueIndex"                      json:"username"`
 	Email    string `gorm:"uniqueIndex"                      json:"email"`
 	Password string `                                        json:"password"`
+	Type     string `                                        json:"type"`
+	Image    string `                                        json:"image"`
+	Token_id string `                                        json:"token_id"`
 }
